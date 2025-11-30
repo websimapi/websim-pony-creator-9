@@ -71,9 +71,7 @@ export function setupPaletteInteractions() {
                     img.style.width = '160px';
                     img.style.height = 'auto';
 
-                    if (src.includes('horn.png')) {
-                        img.style.transform = 'scaleX(-1)';
-                    }
+                    // Removed horn-specific flipping so all horns use their natural orientation
                     ghostContainer.appendChild(img);
                 }
 

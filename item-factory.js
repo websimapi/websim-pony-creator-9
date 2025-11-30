@@ -122,12 +122,7 @@ export function createSingleItem(id, src, type, x, y, initialRotation = 0, initi
     el.style.width = '160px';
     el.draggable = false;
 
-    // Apply default flip for pink horn
-    if (src.includes('horn.png')) {
-        el.dataset.flip = 'true';
-        el.style.transform = 'scaleX(-1)';
-    }
-
+    // Removed special-case horn flip so all horns are handled uniformly
     el.style.left = (x - 80) + 'px';
     el.style.top = (y - 80) + 'px';
 
