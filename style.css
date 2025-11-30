@@ -1,0 +1,316 @@
+:root {
+    --bg-color: #f0f4f8;
+    --panel-bg: #ffffff;
+    --accent: #ff6b6b;
+    --text: #333;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    touch-action: none; /* Prevent browser zooming/scrolling */
+}
+
+#dev-log-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 300;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+#dev-log-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+#app {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    /* Removed flex layout to allow absolute positioning of layers */
+}
+
+/* Stage Area */
+#stage-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible; /* Allow items to be seen even if dragged 'out of bounds' */
+    background: radial-gradient(circle, #fff 0%, #e0e0e0 100%);
+    z-index: 1; /* Base layer */
+}
+
+#stage {
+    position: relative;
+    /* width: 700px;  doubled size */
+    /* height: 700px; */
+    width: min(700px, 100vw, calc(100vh - 180px));
+    height: min(700px, 100vw, calc(100vh - 180px));
+    user-select: none;
+    touch-action: none; /* Important for pointer events */
+}
+
+#base-pony {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: relative;
+    z-index: 10; /* Pony is in the middle */
+    pointer-events: none;
+}
+
+/* Draggable Elements on Stage */
+.stage-item {
+    position: absolute;
+    cursor: grab;
+    touch-action: none;
+    transform-origin: center center;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.stage-item:active {
+    cursor: grabbing;
+}
+
+/* Selected item indicator */
+.stage-item.selected {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* Z-Indices */
+.z-back {
+    z-index: 5; /* Behind pony (10) */
+}
+
+.z-front {
+    z-index: 20; /* In front of pony */
+}
+
+/* Special styling for wings */
+.wing-back {
+    filter: brightness(0.8); /* Slightly darker for depth */
+}
+
+/* Palette Area */
+#palette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    background: var(--panel-bg);
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+#palette-tabs {
+    display: flex;
+    height: 44px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    border: none;
+    background: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    touch-action: manipulation;
+}
+
+.tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: #fff;
+}
+
+#palette-content {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.palette-category {
+    display: none; /* Hidden by default */
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+    box-sizing: border-box;
+}
+
+.palette-category.active {
+    display: flex;
+}
+
+.palette-item {
+    width: 80px; /* Larger for mobile */
+    height: 80px;
+    object-fit: contain;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 5px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: grab;
+    touch-action: pan-x !important; /* Allow horizontal scrolling */
+}
+
+/* Add shadow to wings to imply a pair */
+.palette-item[data-type="wing"] {
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.1));
+}
+
+/* Flip the rainbow wing thumbnail so it faces the desired direction */
+.wing-rainbow {
+    transform: scaleX(-1);
+}
+
+.palette-item:active {
+    transform: scale(0.95);
+    border-color: var(--accent);
+}
+
+/* Controls */
+#controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none; /* Let clicks pass through to stage if needed, buttons re-enable */
+    z-index: 200; /* Ensure controls are above everything */
+}
+
+#clear-btn {
+    pointer-events: auto;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-weight: bold;
+    font-size: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#z-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    pointer-events: auto;
+}
+
+.z-group {
+    display: flex;
+    gap: 8px;
+}
+
+.z-group button {
+    background: #ffffff;
+    color: var(--text);
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    touch-action: manipulation;
+    min-width: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hint {
+    background: rgba(255,255,255,0.8);
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 5px;
+    pointer-events: auto;
+}
+
+/* Delete Zone (Appears when dragging) */
+#delete-zone {
+    position: absolute;
+    bottom: 180px; /* Above palette */
+    right: 20px;
+    transform: translateY(50px);
+    background: rgba(255, 0, 0, 0.15);
+    border: 2px dashed rgba(255, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: red;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 90;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+}
+
+#delete-zone.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#delete-zone.hover {
+    background: rgba(255, 0, 0, 0.5);
+    transform: scale(1.1);
+    color: white;
+    border-color: red;
+    box-shadow: 0 0 15px rgba(255,0,0,0.4);
+}
+
+/* Add handle styling tweaks if desired */
+#transform-handle {
+    z-index: 250;
+}

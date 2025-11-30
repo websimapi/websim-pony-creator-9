@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum=1.0, user-scalable=no">
+    <title>Pony Creator</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+        {
+          "imports": {
+            "interactjs": "https://esm.sh/interactjs"
+          }
+        }
+    </script>
+</head>
+<body>
+    <div id="app">
+        <button id="dev-log-btn" title="Log Wing Positions">🐞</button>
+        <div id="stage-container">
+            <div id="stage">
+                <!-- Layers will be injected here -->
+                <img id="base-pony" alt="Base Pony" draggable="false">
+            </div>
+        </div>
+        
+        <div id="palette">
+            <div id="palette-tabs">
+                <button class="tab-btn active" data-category="base">Pony</button>
+                <button class="tab-btn" data-category="wings">Wings</button>
+                <button class="tab-btn" data-category="horns">Horns</button>
+                <button class="tab-btn" data-category="marks">Marks</button>
+            </div>
+            
+            <div id="palette-content">
+                <!-- Base Ponies -->
+                <div class="palette-category active" id="cat-base">
+                    <img src="base_pony_white.png" class="palette-item" data-type="base" draggable="false">
+                    <img src="base-pony.jpeg" class="palette-item" data-type="base" draggable="false" title="Brown base pony">
+                    <img src="base_pony_pink.png" class="palette-item" data-type="base" draggable="false">
+                    <img src="base_pony_blue.png" class="palette-item" data-type="base" draggable="false">
+                    <img src="base_pony_purple.png" class="palette-item" data-type="base" draggable="false">
+                    <img src="base_pony_yellow.png" class="palette-item" data-type="base" draggable="false">
+                    <img src="base_pony_sketch.png" class="palette-item" data-type="base" draggable="false">
+                </div>
+
+                <!-- Wings -->
+                <div class="palette-category" id="cat-wings">
+                    <img src="wing.png" class="palette-item wing-rainbow" data-type="wing" draggable="false">
+                    <img src="wing_dragon.png" class="palette-item" data-type="wing" draggable="false">
+                    <img src="wing_butterfly.png" class="palette-item" data-type="wing" draggable="false">
+                </div>
+
+                <!-- Horns -->
+                <div class="palette-category" id="cat-horns">
+                    <img src="horn.png" class="palette-item" data-type="horn" draggable="false">
+                    <img src="horn_blue.png" class="palette-item" data-type="horn" draggable="false">
+                    <img src="horn_gold.png" class="palette-item" data-type="horn" draggable="false">
+                    <img src="horn_pastel_rainbow.png" class="palette-item" data-type="horn" draggable="false">
+                    <img src="horn_silver.png" class="palette-item" data-type="horn" draggable="false">
+                    <img src="horn_black.png" class="palette-item" data-type="horn" draggable="false">
+                </div>
+
+                <!-- Marks -->
+                <div class="palette-category" id="cat-marks">
+                    <img src="mark_star.png" class="palette-item" data-type="mark" draggable="false">
+                    <img src="mark_heart.png" class="palette-item" data-type="mark" draggable="false">
+                    <img src="mark_bolt.png" class="palette-item" data-type="mark" draggable="false">
+                    <img src="mark_apple.png" class="palette-item" data-type="mark" draggable="false">
+                    <img src="mark_balloon.png" class="palette-item" data-type="mark" draggable="false">
+                    <img src="mark_diamond.png" class="palette-item" data-type="mark" draggable="false">
+                </div>
+            </div>
+        </div>
+        
+        <div id="controls">
+            <button id="clear-btn">Clear All</button>
+            <div id="z-controls">
+                <div class="z-group">
+                    <button id="z-up">Z ⬆</button>
+                    <button id="z-down">Z ⬇</button>
+                    <button id="flip-btn">Flip ↔</button>
+                </div>
+            </div>
+            <p class="hint">Drag items onto the pony!</p>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"4c6229722a6346bc8eb5cb0e5eae5d41","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
